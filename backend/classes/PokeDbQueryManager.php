@@ -95,6 +95,6 @@ class PokeDbQueryManager
      */
     public function get_user_login($user, $password)
     {
-        return $this->pokeSqlite->querySingle("SELECT id, user_email, user_password FROM users WHERE user_email=? AND user_password=?;", [$user, $password]);
+        return $this->pokeSqlite->query_single("SELECT id, user_email, user_password FROM users WHERE user_email=? AND user_password=?;", [$user, $password]);
     }
 }

@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "pokemon";
+  src: url("./assets/fonts/Pokemon_Hollow.ttf");
+}
+*:not(.poke-app-title){
+      font-family: cursive !important;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('./assets/img/main-background.PNG');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.poke-app-title{
+  font-family: 'pokemon';
+  font-size: 40px;
+  text-align: center;
+}

@@ -1,6 +1,6 @@
 export const paperStyle = {
   padding: 20,
-  height: "55vh",
+  height: "50vh",
   width: 280,
   margin: "19px auto",
   backgroundColor: "white",
@@ -10,14 +10,16 @@ export const paperStyle = {
 };
 
 export const listingPaperStyle = {
-  minHeight: "55vh",
+  minHeight: "50vh",
   overflow: "auto",
-  maxHeight: "80vh",
+  maxHeight: "75vh",
+  marginTop: "20px",
+  width:"100%"
 };
 
 export const mainPaperStyle = {
   padding: 20,
-  minHeight: "55vh",
+  minHeight: "50vh",
   width: 500,
   margin: "19px auto",
   backgroundColor: "white",
@@ -34,4 +36,50 @@ export const logoStyle = {
   margin: "10px 0",
   width: 70,
   height: 70,
+};
+
+export const pokeButtonPrimary = {
+  borderRadius: 8,
+  color: "white",
+  borderColor: "blue",
+  "&:hover": {
+    backgroundColor: "lightblue",
+    borderColor: "blue",
+  },
+};
+
+export const pokeButtonSecondary = {
+  borderRadius: 8,
+  backgroundColor: "yellow",
+  color: "black",
+  "&:hover": {
+    backgroundColor: "gold",
+  },
+};
+
+export const pokeButtonDanger = {
+  borderRadius: 8,
+  backgroundColor: "red",
+  color: "white",
+  "&:hover": {
+    backgroundColor: "darkred",
+  },
+};
+
+export const pokeDescription = {
+    display: "inline-flex",
+    gap: 1, 
+    mt: 1,
+    justifyContent: "flex-start",
+    alignContent: "stretch",
+    alignItems: "flex-end",
+    flexWrap: "wrap",
+    flexDirection: "row",
+}
+
+export const pokeLogStyle = {
+  display: "block",
+  background: "#eee",
+  padding: "15px",
+  fontSize: "12px",
 };

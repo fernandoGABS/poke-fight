@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import PokemonLoader from "../components/PokeLoader";
 import { useNavigate } from 'react-router-dom';
 
-function PokemonLoginPage() {
+function LoginPokemonPage() {
   const { user, login } = useContext(AuthContext);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -83,4 +83,4 @@ function PokemonLoginPage() {
   );
 }
 
-export default PokemonLoginPage;
+export default LoginPokemonPage;

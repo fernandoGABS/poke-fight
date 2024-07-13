@@ -1,10 +1,3 @@
-@font-face {
-  font-family: "pokemon";
-  src: url("./assets/fonts/Pokemon_Hollow.ttf");
-}
-*:not(.poke-app-title){
-      font-family: cursive !important;
-}
 body {
   margin: 0;
   padding: 0;

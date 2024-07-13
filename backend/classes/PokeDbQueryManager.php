@@ -55,20 +55,16 @@ class PokeDbQueryManager
             if ($this->is_user_registered($user)) {
                 return array(
                     "status" => 400,
-                    "data" => null,
+                    "information" => null,
                     "msg" => "User already exists"
                 );
             } else {
-                $new_user = $this->pokeSqlite->execute("INSERT INTO users (user_email, user_password) VALUES (?, ?)", [$user, $password]);
-                return array(
-                    "status" => 200,
-                    "data" => $new_user,
-                    "msg" => "Welcome to Poke Fights!"
-                );
+                return $this->pokeSqlite->execute("INSERT INTO users (user_email, user_password) VALUES (?, ?)", [$user, $password]);
             }
         } catch (Exception $e) {
             return array(
                 "status" => 500,
+                "information" => null,
                 "msg" => $e->getMessage()
             );
         }
@@ -81,10 +77,10 @@ class PokeDbQueryManager
     {
         try {
             $found = $this->pokeSqlite->query_single("SELECT id, user_email, user_password FROM users WHERE user_email=?", [$user]);
-            if (!is_null($found["data"]) && count($found["data"]) > 0) {
-                return true;
+            if (is_null($found["information"])) {
+                return false;
             }
-            return false;
+            return (count($found) > 0);
         } catch (Exception $e) {
             return false;
         }
@@ -95,6 +91,6 @@ class PokeDbQueryManager
      */
     public function get_user_login($user, $password)
     {
-        return $this->pokeSqlite->query_single("SELECT id, user_email, user_password FROM users WHERE user_email=? AND user_password=?;", [$user, $password]);
+        return $this->pokeSqlite->query_single("SELECT id, user_email FROM users WHERE user_email=? AND user_password=?;", [$user, $password]);
     }
 }

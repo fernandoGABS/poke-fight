@@ -6,71 +6,68 @@ import { fetchPokemons } from "../services/PokemonAPI";
 import { PokemonItem } from "../types/interfaces";
 import PokemonCard from "../components/PokeCard";
 import PokemonLoader from "../components/PokeLoader";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
 import PokeDex from "../components/PokeDex";
 import { Link } from "react-router-dom";
+import usePokemonFighters from "../hooks/usePokemonFighters";
+import { PokeNavbar } from "../components/PokeNavbar";
 
-const pokemonDefaultValues : PokemonItem = {
-    id: 0,
-    name:"",
-    url: "",
-    image: ""
-}
+const defaultPokemon: PokemonItem = {
+  id: 0,
+  name: "",
+  url: "",
+  image: "",
+};
 
-function getPokemonImageBasedOnUrl(url: string) {
-  const baseSprite =
+const getPokemonImageUrl = (url: string): string => {
+  const baseSpriteUrl =
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
   const urlParts = url.split("/");
   const pokemonId = urlParts[urlParts.length - 2];
-  return `${baseSprite}/${pokemonId}.png`;
-}
+  return `${baseSpriteUrl}/${pokemonId}.png`;
+};
 
 function ListPokemonPage() {
-  const pokemonLimit = 15; //show 10, 20, 30... change it manually
   const [pokemonList, setPokemonList] = useState<PokemonItem[]>([]);
   const [pokemonOffset, setPokemonOffset] = useState(0);
   const [isLoadingMorePokemon, setIsLoadingMorePokemon] = useState(true);
-  const [pokemonDetailed, setPokemonDetailed] = useState<PokemonItem>(pokemonDefaultValues);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokemonItem>(defaultPokemon);
   const [isShowingPokedex, setIsShowingPokedex] = useState(false);
 
-  const pokemonFighters = useSelector(
-    (state: RootState) => state.pokemon.pokemonFighters
-  );
+  const { pokemonFighters } = usePokemonFighters();
+  const pokemonLimit = 15;
 
   useEffect(() => {
-    const listPokemon = async () => {
+    const fetchPokemonList = async () => {
       setIsLoadingMorePokemon(true);
       const results = await fetchPokemons(pokemonOffset, pokemonLimit);
       if (results) {
-        const processed = results.map((item: PokemonItem, i: number) => {
-          return {
-            id: i,
-            name: item.name,
-            url: item.url,
-            image: getPokemonImageBasedOnUrl(item.url),
-          };
-        });
-        setPokemonList((prevList) => [...prevList, ...processed]);
+        const processedPokemons = results.map((item: PokemonItem, i: number) => ({
+          id: i,
+          name: item.name,
+          url: item.url,
+          image: getPokemonImageUrl(item.url),
+        }));
+        setPokemonList((prevList) => [...prevList, ...processedPokemons]);
         setIsLoadingMorePokemon(false);
       }
     };
-    listPokemon();
+    fetchPokemonList();
   }, [pokemonOffset]);
 
   const loadMorePokemons = () => {
     setPokemonOffset((prevOffset) => prevOffset + pokemonLimit);
   };
 
-  const viewPokemonInfo = (selectedPokemon: PokemonItem) =>{
-    setPokemonDetailed(selectedPokemon);
+  const viewPokemonDetails = (pokemon: PokemonItem) => {
+    setSelectedPokemon(pokemon);
     setIsShowingPokedex(true);
-    console.log(isShowingPokedex)
-    console.log(selectedPokemon)
-  }
+  };
 
   return (
-    <Paper style={mainPaperStyle}>
+    <Grid>
+      <PokeNavbar />
+      <Paper style={mainPaperStyle}>
+      
       <Typography variant="h4" component="h1" gutterBottom textAlign={"center"}>
         Pokémon List
       </Typography>
@@ -96,7 +93,7 @@ function ListPokemonPage() {
       <Grid style={listingPaperStyle}>
         {pokemonList.map((item: PokemonItem, i) => (
           <Grid item key={i}>
-            <PokemonCard pokemon={item} onViewDetails={(pokemon) => viewPokemonInfo(pokemon)} />
+            <PokemonCard pokemon={item} onViewDetails={(pokemon) => viewPokemonDetails(pokemon)} />
           </Grid>
         ))}
 
@@ -114,9 +111,11 @@ function ListPokemonPage() {
         )}
       </Grid>
       {
-        isShowingPokedex && (<PokeDex pokemon={pokemonDetailed} onHide={()=>setIsShowingPokedex(false)} />)
+        isShowingPokedex && (<PokeDex pokemon={selectedPokemon} onHide={()=>setIsShowingPokedex(false)} />)
       }
     </Paper>
+    </Grid>
+    
   );
 }
 

@@ -35,13 +35,13 @@ class PokeLogManager
         if (file_put_contents($this->poke_log_file, $logMessage, FILE_APPEND)) {
             return array(
                 "status" => 200,
-                "data" => null,
+                "information" => null,
                 "msg" => "Log was updated successfully"
             );
         }
         return array(
             "status" => 400,
-            "data" => null,
+            "information" => null,
             "msg" => "Error trying to write in the log file"
         );
     }
@@ -53,11 +53,11 @@ class PokeLogManager
     {
         $logfile_content = "";
         if (file_exists($this->poke_log_file)) {
-            $logfile_content = nl2br(file_get_contents($this->poke_log_file));
+            $logfile_content = file_get_contents($this->poke_log_file);
         }
         return array(
             "status" => 200,
-            "data" => $logfile_content,
+            "information" => $logfile_content,
             "msg" => ""
         );
     }

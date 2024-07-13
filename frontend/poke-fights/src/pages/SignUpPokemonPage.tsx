@@ -9,47 +9,62 @@ import PokemonLoader from "../components/PokeLoader";
 import { useNavigate } from 'react-router-dom';
 import { PokeNavbar } from "../components/PokeNavbar";
 
-function LoginPokemonPage() {
-  const {login } = useContext(AuthContext);
+function SignUpPokemonPage() {
+  const {signup } = useContext(AuthContext);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLoginSubmission = async (e: React.FormEvent) => {
+  const handleSignupSubmission = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      if(userEmail === "" && userPassword === ""){
-         Swal.fire("Error in login", "Please, provide user and password", "error");
+      if(userEmail.trim() === "" || userPassword.trim() === ""){
+         Swal.fire("Error in signup", "Please, provide user and password", "error");
           setIsLoading(false);
       }else{
-        const data  = await login(userEmail, userPassword);
-        if(data.id > 0){
-          navigate('/pokemon-list');
+        if(! /^\S+@\S+\.\S+$/.test(userEmail)){
+          Swal.fire("Error in signup", "Invalid email", "error");
           setIsLoading(false);
         }else{
-          Swal.fire("Account Error", "No master Pokémon user was found. Please sign up", "error");
-          setIsLoading(false);
+          const data = await signup(userEmail, userPassword);
+          if(data){
+            if (data.id === 0) {
+              Swal.fire("Account Error", data.msg, "error");
+              setIsLoading(false);
+            } else {
+              Swal.fire("Welcome!", "Welcome to Pokemon Fights!", "success").then(()=>{
+                setIsLoading(false);
+                navigate('/pokemon-list');
+              });
+            }
+          }
         }
       }
-    } catch (err) {
-      Swal.fire("Account Error", "Error trying to login", "error");
+      
+    } catch (err: any) {
+      Swal.fire("Unexpected error", err.data.msg || "Unexpected error", "error");
       setIsLoading(false);
     }
   };
 
   return (
     <Grid>
-       <PokeNavbar />
+      <PokeNavbar />
       <Paper style={mainPaperStyle}>
-       <h2 className="poke-app-title">Poke Fights</h2>
+        
+        <Grid>
+          <h2 className="poke-app-title">Poke Fights</h2>
+        </Grid>
         {isLoading && <PokemonLoader />}
         {!isLoading && (
           <div>
+            <Typography >Please, fill this form to register</Typography>
             <TextField
               label="Master pokemon email"
               variant="standard"
+              type="email"
               placeholder="Enter your email"
               fullWidth
               required
@@ -72,13 +87,13 @@ function LoginPokemonPage() {
               color="primary"
               variant="contained"
               fullWidth
-              onClick={handleLoginSubmission}
+              onClick={handleSignupSubmission}
             >
-              Login
+              Register
             </Button>
             <Typography>
-              Don't have an account?
-              <Link href="/sign-up">Sign Up here</Link>
+              Have an account?
+              <Link href="/login">Login here</Link>
             </Typography>
           </div>
         )}
@@ -87,4 +102,4 @@ function LoginPokemonPage() {
   );
 }
 
-export default LoginPokemonPage;
+export default SignUpPokemonPage;

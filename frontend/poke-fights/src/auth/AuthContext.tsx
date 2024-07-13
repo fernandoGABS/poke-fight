@@ -1,68 +1,81 @@
-import React, { createContext, useState } from 'react';
-import axios, { AxiosError } from 'axios';
-import { AuthContextType, AuthProviderProps, PokeUser } from '../types/interfaces';
+import React, { createContext, useEffect, useState } from "react";
+import {
+  AuthContextType,
+  AuthProviderProps,
+  PokeUser,
+} from "../types/interfaces";
+import { loginPokeApp, signupPokeApp } from "../services/MiddlewareService";
 
-const pokeMiddlewareUrl = `${process.env.REACT_APP_POKE_MIDDLEWARE_URL}`;
-
-const pokeUserDefaultValues : PokeUser = {
-    id: 0,
-    user_email:"",
-    user_password: ""
-}
-
-const pokeAuthContextDefault: AuthContextType = {
-    user: pokeUserDefaultValues,
-    login: (user_email: string, user_password: string): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      axios.post(pokeMiddlewareUrl, {action: 'login', user_email, user_password })
-        .then(response => {
-          // Assuming your backend returns response.data on success
-          resolve(response.data);
-        })
-        .catch(error => {
-          console.error('Login error:', error);
-          reject(error);
-        });
-    });
-  },
-    logout: () => {},
+const pokeUserDefaultValues: PokeUser = {
+  id: 0,
+  user_email: "",
+  user_password: "",
 };
 
-export const AuthContext = createContext<AuthContextType>(pokeAuthContextDefault);
+const pokeAuthContextDefault: AuthContextType = {
+  user: pokeUserDefaultValues,
+  signup: async (): Promise<any> => {},
+  login: async (): Promise<any> => {},
+  logout: () => {},
+};
+
+
+export const AuthContext = createContext<AuthContextType>(
+  pokeAuthContextDefault
+);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<PokeUser>(pokeUserDefaultValues);
+  const [user, setUser] = useState<PokeUser>(() => {
+    const storedPokemonMaster = localStorage.getItem("userPokeFights");
+    return storedPokemonMaster
+      ? JSON.parse(storedPokemonMaster)
+      : pokeUserDefaultValues;
+  });
 
+  useEffect(() => {
+    const storedPokemonMaster = localStorage.getItem("userPokeFights");
+    if (storedPokemonMaster) {
+      setUser(JSON.parse(storedPokemonMaster));
+    }
+  }, []);
 
   const login = async (user_email: string, user_password: string) => {
-    try {
-        const response = await axios.post(pokeMiddlewareUrl, {
-        action: 'login',
-        user_email,
-        user_password,
-        }, {
-        withCredentials: true,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        });
-        if(response.status===200){
-            setUser(response.data.information);
-        }
-        return response;
-    } catch (error) {
-       setUser(pokeUserDefaultValues);
-       console.log(error)
-       //return error.response.data;
-    } 
+    const {data} = await loginPokeApp(user_email, user_password);
+    if(data){
+        const response = data;
+        if (response.status === 200) {
+        setUser(response.information);
+        localStorage.setItem(
+          "userPokeFights",
+          JSON.stringify(response.information)
+        );
+      }
+      return response.information;
+    }
+  };
+
+  const signup = async (user_email: string, user_password: string) => {
+    const {data} = await signupPokeApp(user_email, user_password);
+    if(data){
+        const response = data;
+        if (response.status === 200) {
+        setUser(response.information);
+        localStorage.setItem(
+          "userPokeFights",
+          JSON.stringify(response.information)
+        );
+      }
+      return response.information;
+    }
   };
 
   const logout = async () => {
+    localStorage.removeItem("userPokeFights");
     setUser(pokeUserDefaultValues);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

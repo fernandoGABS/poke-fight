@@ -6,14 +6,26 @@
  * 
  */
 
+//In productive environments this should be added on a env file, this case will be used here
+define("POKE_SQLITE_PATH", "pokedb.sqlite");
+define("POKE_LOG_PATH", "poke.log");
+define("POKE_FRONT_END_URL", "http://localhost:3000");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: " . POKE_FRONT_END_URL);
+    header("Access-Control-Allow-Credentials: true");
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+    http_response_code(200);
+    exit();
+}
+
+header("Access-Control-Allow-Origin: " . POKE_FRONT_END_URL);
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 //Declaration classes
 require_once "classes/PokeDbQueryManager.php";
 require_once "classes/PokeLogManager.php";
 
-//In productive environments this should be added on a env file, this case will be used here
-define("POKE_SQLITE_PATH", "pokedb.sqlite");
-define("POKE_LOG_PATH", "poke.log");
 
 
 //default response:
@@ -30,15 +42,15 @@ if ($method == "POST") {
     $db = new PokeDbQueryManager(POKE_SQLITE_PATH);
     $log = new PokeLogManager(POKE_LOG_PATH);
     $action = filter_input(INPUT_POST, 'action');
-
     switch ($action) {
         case "login":
-            $user_name = filter_input(INPUT_POST, 'user_name');
+            $user_name = filter_input(INPUT_POST, 'user_email');
             $user_password = filter_input(INPUT_POST, 'user_password');
             $server_response = $db->get_user_login($user_name, $user_password);
+
             break;
         case "signup":
-            $user_name = filter_input(INPUT_POST, 'user_name');
+            $user_name = filter_input(INPUT_POST, 'user_email');
             $user_password = filter_input(INPUT_POST, 'user_password');
             $server_response = $db->register_user($user_name, $user_password);
             if ($server_response["status"] == 200) {

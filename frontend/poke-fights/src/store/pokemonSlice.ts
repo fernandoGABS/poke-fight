@@ -1,10 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PokemonItem } from "../types/interfaces";
-
-interface PokemonState {
-  pokemonFighters: PokemonItem[];
-  pokemonMax: number;
-}
+import { PokemonState } from "../types/interfaces";
 
 const initialState: PokemonState = {
   pokemonFighters: [],
@@ -21,17 +16,16 @@ const pokemonSlice = createSlice({
       }
     },
     removeFighter: (state, action) => {
-        console.log(action.payload);
-        console.log(state.pokemonFighters.filter(
-        (pokemon) => pokemon.id !== action.payload
-      ))
       state.pokemonFighters = state.pokemonFighters.filter(
         (pokemon) => pokemon.id !== action.payload
       );
     },
+    removeAllFighters: (state) => {
+      state.pokemonFighters = [];
+    },
   },
 });
 
-export const { addFighter, removeFighter } = pokemonSlice.actions;
+export const { addFighter, removeFighter, removeAllFighters } = pokemonSlice.actions;
 
 export default pokemonSlice.reducer;

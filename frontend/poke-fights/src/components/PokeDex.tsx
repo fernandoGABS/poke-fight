@@ -1,6 +1,6 @@
 import { fetchPokemonDetails } from "../services/PokemonAPI";
 import { FunctionComponent, useEffect, useState } from "react";
-import { PokemonItemDetails, PokemonItem } from "../types/interfaces";
+import { PokemonItemDetails } from "../types/interfaces";
 import {
   Box,
   Button,
@@ -19,17 +19,15 @@ import {
   CatchingPokemonTwoTone,
 } from "@mui/icons-material";
 import { pokeDescription } from "../styles/CustomStyling";
+import { PokedexProps } from "../types/types";
 
-type PokedexProps = {
-  pokemon: PokemonItem;
-  onHide: () => void;
-};
 
 export const PokeDex: FunctionComponent<PokedexProps> = ({
   pokemon,
   onHide,
 }) => {
   const [pokemonInfo, setPokemonInfo] = useState<PokemonItemDetails>();
+
   useEffect(() => {
     const getPokemonInformation = async () => {
       const data = await fetchPokemonDetails(pokemon.url);
@@ -37,13 +35,14 @@ export const PokeDex: FunctionComponent<PokedexProps> = ({
         setPokemonInfo(data);
       }
     };
-    if (pokemon) {
+
+    if (pokemonInfo?.id===undefined) {
       getPokemonInformation();
     }
-  }, [pokemon]);
+  }, [pokemon.url, pokemonInfo]);
 
   return (
-    <Dialog open={true}>
+    <Dialog open={true} onClose={onHide}>
       <DialogTitle
         textAlign={"center"}
         textTransform={"uppercase"}
@@ -51,7 +50,7 @@ export const PokeDex: FunctionComponent<PokedexProps> = ({
       >
         {pokemon.name}
       </DialogTitle>
-      <Card sx={{ display: "flex", padding: "20px" }}>
+      <Card sx={{ display: "flex", padding: "20px", flexDirection: { xs: "column", md: "row" } }}>
         {pokemonInfo ? (
           <>
             <CardMedia
@@ -60,7 +59,7 @@ export const PokeDex: FunctionComponent<PokedexProps> = ({
               alt={`${pokemon.name} picture photo`}
               sx={{maxHeight:"300px"}}
             />
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", overflow:"auto" }}>
               <CardContent sx={{ flex: "1 0 auto" }}>
                 <Box sx={{ gap: 1, mt: 1 }}>
                   <Typography

@@ -38,19 +38,19 @@ class PokeSqliteDbManager
             $success = $stmt->execute($params);
             return array(
                 "status" => 200,
-                "data" => $success,
+                "information" => $success,
                 "msg" => "Successful"
             );
         } catch (PDOException $e) {
             return array(
                 "status" => 400,
-                "data" => null,
+                "information" => null,
                 "msg" => "PDOException: " . $e->getMessage()
             );
         } catch (Exception $e) {
             return array(
                 "status" => 500,
-                "data" => null,
+                "information" => null,
                 "msg" => "Exception: " . $e->getMessage()
             );
         }
@@ -67,19 +67,19 @@ class PokeSqliteDbManager
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return array(
                 "status" => 200,
-                "data" => $results,
-                "msg" => "Successful"
+                "information" => $results,
+                "msg" => "successful"
             );
         } catch (PDOException $e) {
             return array(
                 "status" => 400,
-                "data" => null,
+                "information" => null,
                 "msg" => "PDOException: " . $e->getMessage()
             );
         } catch (Exception $e) {
             return array(
                 "status" => 500,
-                "data" => null,
+                "information" => null,
                 "msg" => "Exception: " . $e->getMessage()
             );
         }
@@ -97,25 +97,25 @@ class PokeSqliteDbManager
             if ($result === false) {
                 return array(
                     "status" => 404,
-                    "data" => null,
-                    "msg" => "No record found"
+                    "information" => null,
+                    "msg" => "empty"
                 );
             }
             return array(
                 "status" => 200,
-                "data" => $result,
-                "msg" => "Successful"
+                "information" => $result,
+                "msg" => "successful"
             );
         } catch (PDOException $e) {
             return array(
                 "status" => 400,
-                "data" => null,
+                "information" => null,
                 "msg" => "PDOException: " . $e->getMessage()
             );
         } catch (Exception $e) {
             return array(
                 "status" => 500,
-                "data" => null,
+                "information" => null,
                 "msg" => "Exception: " . $e->getMessage()
             );
         }

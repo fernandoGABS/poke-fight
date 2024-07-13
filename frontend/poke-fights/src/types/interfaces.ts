@@ -9,6 +9,7 @@ export interface PokeUser {
 export interface AuthContextType {
   user: PokeUser;
   login: (user_email: string, user_password: string) => Promise<any>;
+  signup: (user_email: string, user_password: string) => Promise<any>;
   logout: () => void;
 }
 
@@ -51,4 +52,9 @@ export interface PokemonItemDetails {
   special: number;
   defense: number;
   hp: number;
+}
+
+export interface PokemonState {
+  pokemonFighters: PokemonItem[];
+  pokemonMax: number;
 }

@@ -10,22 +10,22 @@ export const paperStyle = {
 };
 
 export const listingPaperStyle = {
-  minHeight: "50vh",
+  minHeight: "45vh",
   overflow: "auto",
-  maxHeight: "75vh",
+  maxHeight: "65vh",
   marginTop: "20px",
   width:"100%"
 };
 
 export const mainPaperStyle = {
   padding: 20,
-  minHeight: "50vh",
-  width: 500,
+  minHeight: "45vh",
+  maxWidth: 500,
   margin: "19px auto",
   backgroundColor: "white",
-  borderRadius: "12px",
-  border: "4px solid #0000FF",
-  boxShadow: "0px 0px 8px rgba(0, 0, 0, 25)",
+  borderWidth: "0 5px 5px 5px",
+borderStyle: "solid",
+borderColor: "#1976d2"
 };
 
 
@@ -82,4 +82,8 @@ export const pokeLogStyle = {
   background: "#eee",
   padding: "15px",
   fontSize: "12px",
+  minWidth: "200px",
+  overflow: "auto",
+  maxHeight:"400px",
+
 };

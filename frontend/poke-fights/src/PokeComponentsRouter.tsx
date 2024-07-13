@@ -6,6 +6,7 @@ import LoginPokemonPage from "./pages/LoginPokemonPage";
 import SignUpPokemonPage from "./pages/SignUpPokemonPage";
 import FightPokemonPage from "./pages/FightPokemonPage";
 import usePokemonFighters from "./hooks/usePokemonFighters";
+import PokemonFightersPage from "./pages/PokemonFightersPage";
 
 function PokeComponentsRouter() {
   const { user } = useContext(AuthContext);
@@ -20,6 +21,9 @@ function PokeComponentsRouter() {
             <Route path="/pokemon-list" element={<ListPokemonPage />} />
             <Route path="/pokemon-fight" element={
                 pokemonFighters.length === 2 ? <FightPokemonPage /> : <Navigate to="/pokemon-list" />
+            } />
+            <Route path="/pokemon-fighters" element={
+                pokemonFighters.length > 0 ? <PokemonFightersPage /> : <Navigate to="/pokemon-list" />
             } />
             <Route path="/*" element={<Navigate to="/login" />} />
           </>

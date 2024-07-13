@@ -83,7 +83,6 @@ function ListPokemonPage() {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={loadMorePokemons}
             sx={{ marginTop: 2 }}
           >
             Ready to Fight!

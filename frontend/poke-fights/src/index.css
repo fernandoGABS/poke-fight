@@ -22,14 +22,6 @@ body {
   background-repeat: no-repeat;
 }
 
-.poke-app-title{
-  font-family: 'pokemon';
-  font-size: 40px;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
 .nolink{
   text-decoration: none;
   color: inherit;

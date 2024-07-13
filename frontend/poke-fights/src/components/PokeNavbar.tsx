@@ -14,6 +14,7 @@ import usePokemonFighters from "../hooks/usePokemonFighters";
 import { useDispatch } from "react-redux";
 import { removeAllFighters } from "../store/pokemonSlice";
 import PokeAPILog from "./PokeApiLog";
+import { appBarStyle } from "../styles/CustomStyling";
 
 export const PokeNavbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -51,7 +52,7 @@ export const PokeNavbar = () => {
         zIndex: 100,
       }}
     >
-      <AppBar position="static">
+      <AppBar position="static" style={appBarStyle}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {user.user_email !== ""
@@ -101,6 +102,11 @@ export const PokeNavbar = () => {
                     Remove fighters
                   </MenuItem>
                 )}
+                <MenuItem>
+                  <Link className="nolink" to="/pokemon-fighters">
+                    View fighters
+                  </Link>
+                </MenuItem>
                 <MenuItem onClick={handleShowAPILog}>Show LOG</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>

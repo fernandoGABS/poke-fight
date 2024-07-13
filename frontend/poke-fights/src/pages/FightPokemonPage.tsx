@@ -12,6 +12,7 @@ import PokemonCardFight from "../components/PokeCardFight";
 import PokemonLoader from "../components/PokeLoader";
 import usePokemonFighters from "../hooks/usePokemonFighters";
 import { PokeNavbar } from "../components/PokeNavbar";
+import PokeEpicBattleMusic from "../components/PokeEpicBattleMusic";
 
 const getStatValue = (stats: any[], key: string): number => {
   const stat = stats.find((item) => item.stat.name === key);
@@ -143,6 +144,7 @@ function FightPokemonPage() {
         >
           Pokémon Fight!
         </Typography>
+        <PokeEpicBattleMusic/>
         <Grid style={listingPaperStyle} textAlign={"center"}>
           {isLoadingPokemonData && <PokemonLoader />}
 

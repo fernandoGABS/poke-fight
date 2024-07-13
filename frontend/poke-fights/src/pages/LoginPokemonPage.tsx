@@ -1,13 +1,14 @@
 import React, { useState, useContext } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { Button, Link, TextField, Typography } from "@mui/material";
-import { btnstyle, mainPaperStyle } from "../styles/CustomStyling";
+import { Button, CardMedia, Link, TextField, Typography } from "@mui/material";
+import {  mainPaperStyle, pokeButtonLoginSignup } from "../styles/CustomStyling";
 import { AuthContext } from "../auth/AuthContext";
 import Swal from "sweetalert2";
 import PokemonLoader from "../components/PokeLoader";
 import { useNavigate } from 'react-router-dom';
 import { PokeNavbar } from "../components/PokeNavbar";
+import pokeLogo from "../assets/img/logo.png";
 
 function LoginPokemonPage() {
   const {login } = useContext(AuthContext);
@@ -43,7 +44,13 @@ function LoginPokemonPage() {
     <Grid>
        <PokeNavbar />
       <Paper style={mainPaperStyle}>
-       <h2 className="poke-app-title">Poke Fights</h2>
+        <CardMedia
+          component="img"
+          width="90%"
+          image={pokeLogo}
+          alt="Poke Fights logo"
+          sx={{maxWidth:"400px", margin:"auto"}}
+        />
         {isLoading && <PokemonLoader />}
         {!isLoading && (
           <div>
@@ -67,7 +74,7 @@ function LoginPokemonPage() {
               onChange={(e) => setUserPassword(e.target.value)}
             />
             <Button
-              style={btnstyle}
+              style={pokeButtonLoginSignup}
               type="submit"
               color="primary"
               variant="contained"

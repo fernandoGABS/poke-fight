@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 import { addFighter, removeFighter } from "../store/pokemonSlice";
 import usePokemonFighters from "../hooks/usePokemonFighters";
-import { pokeButtonDanger, pokeButtonPrimary, pokeButtonSecondary } from "../styles/CustomStyling";
+import { pokeButtonDanger, pokeButtonPrimaryBlue, pokeButtonSecondary } from "../styles/CustomStyling";
 import { PokemonCardProps } from "../types/types";
 
 const PokemonCard: FunctionComponent<PokemonCardProps> = ({ pokemon, onViewDetails }) => {
@@ -52,7 +52,7 @@ const PokemonCard: FunctionComponent<PokemonCardProps> = ({ pokemon, onViewDetai
           <Box sx={{ display: "flex", gap: 1, mt: 1, flexDirection: { xs: "column", md: "row" } }}>
             <Button
               onClick={viewPokemonInfo}
-              sx={pokeButtonPrimary}
+              sx={pokeButtonPrimaryBlue}
               variant="contained"
               size="small"
               endIcon={<ListOutlined />}
